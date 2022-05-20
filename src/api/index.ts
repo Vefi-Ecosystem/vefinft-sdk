@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as CONSTANTS from "./constants";
-import type { Network, APIResponse, NFTModel } from "./entities";
+import type { Network, APIResponse, NFTModel, CollectionModel } from "./entities";
 
 const baseAxios = axios.create({
   baseURL: ""
@@ -32,6 +32,24 @@ export function getNFTsByCollection(network: Network, collectionId: string): Pro
   return new Promise((resolve, reject) => {
     baseAxios
       .get(CONSTANTS.ALL_NFTs_BY_COLLECTION.replace(":network", network).replace(":collectionId", collectionId))
+      .then((res) => resolve(res.data))
+      .catch(reject);
+  });
+}
+
+export function getCollectionById(network: Network, collectionId: string): Promise<APIResponse<CollectionModel>> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(CONSTANTS.COLLECTION_BY_ID.replace(":network", network).replace(":collectionId", collectionId))
+      .then((res) => resolve(res.data))
+      .catch(reject);
+  });
+}
+
+export function getAllCollectionsByNetwork(network: Network): Promise<APIResponse<Array<CollectionModel>>> {
+  return new Promise((resolve, reject) => {
+    baseAxios
+      .get(CONSTANTS.ALL_COLLECTIONS_BY_NETWORK.replace(":network", network))
       .then((res) => resolve(res.data))
       .catch(reject);
   });
